@@ -1,0 +1,21 @@
+﻿@model TouristInformation.Models.Continent
+
+    @{
+        ViewData["Title"] = "Details";
+    }
+
+    <h1>Details</h1>
+
+<div>
+    @foreach (Country country in ViewBag.Countries )
+            {
+                <tr>
+                    <td> @country.Name</td>
+                </tr>
+            }
+
+</div>
+<div>
+        <a asp-action="Index">Back to List</a>
+ </div>
+
