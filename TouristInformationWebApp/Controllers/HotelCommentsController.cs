@@ -6,86 +6,66 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TouristInformationWebApp.Data;
-using TouristInformation.Models;
+using TouristInformationWebApp.Models;
 
-namespace TouristInformation.Controllers
+namespace TouristInformationWebApp.Controllers
 {
-    public class HotelsController : Controller
+    public class HotelCommentsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public HotelsController(ApplicationDbContext context)
+        public HotelCommentsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Hotels
+        // GET: HotelComments
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Hotel.Include(h => h.City);
-            return View(await appDbContext.ToListAsync());
+            return View(await _context.HotelComments.ToListAsync());
         }
 
-        // GET: Hotels/Details/5
+        // GET: HotelComments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            Hotel hotel = _context.Hotel.Find(id);
-            if (hotel == null)
+
+            var hotelComments = await _context.HotelComments
+                .FirstOrDefaultAsync(m => m.CommentId == id);
+            if (hotelComments == null)
             {
                 return NotFound();
             }
-            ViewBag.ArticleId = id.Value;
 
-            var comments = _context.HotelComments.Where(d => d.HotelId.Equals(id.Value)).ToList();
-            ViewBag.Comments = comments;
-
-            var ratings = _context.HotelComments.Where(d => d.HotelId.Equals(id.Value)).ToList();
-            if (ratings.Count() > 0)
-            {
-                var ratingSum = ratings.Sum(d => d.Rating.Value);
-                ViewBag.RatingSum = ratingSum;
-                var ratingCount = ratings.Count();
-                ViewBag.RatingCount = ratingCount;
-            }
-            else
-            {
-                ViewBag.RatingSum = 0;
-                ViewBag.RatingCount = 0;
-            }
-
-            return View(hotel);
-
+            return View(hotelComments);
         }
 
-        // GET: Hotels/Create
+        // GET: HotelComments/Create
         public IActionResult Create()
         {
-            ViewData["CityId"] = new SelectList(_context.City, "Id", "Name");
             return View();
         }
 
-        // POST: Hotels/Create
+        // POST: HotelComments/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price,Stars,Description,CityId")] Hotel hotel)
+        public async Task<IActionResult> Create([Bind("CommentId,Comments,ThisDateTime,HotelId,Rating")] HotelComments hotelComments)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(hotel);
+                _context.Add(hotelComments);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CityId"] = new SelectList(_context.City, "Id", "Name", hotel.CityId);
-            return View(hotel);
+            return View(hotelComments);
         }
 
-        // GET: Hotels/Edit/5
+        // GET: HotelComments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -93,23 +73,22 @@ namespace TouristInformation.Controllers
                 return NotFound();
             }
 
-            var hotel = await _context.Hotel.FindAsync(id);
-            if (hotel == null)
+            var hotelComments = await _context.HotelComments.FindAsync(id);
+            if (hotelComments == null)
             {
                 return NotFound();
             }
-            ViewData["CityId"] = new SelectList(_context.City, "Id", "Name", hotel.CityId);
-            return View(hotel);
+            return View(hotelComments);
         }
 
-        // POST: Hotels/Edit/5
+        // POST: HotelComments/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Stars,Description,CityId")] Hotel hotel)
+        public async Task<IActionResult> Edit(int id, [Bind("CommentId,Comments,ThisDateTime,HotelId,Rating")] HotelComments hotelComments)
         {
-            if (id != hotel.Id)
+            if (id != hotelComments.CommentId)
             {
                 return NotFound();
             }
@@ -118,12 +97,12 @@ namespace TouristInformation.Controllers
             {
                 try
                 {
-                    _context.Update(hotel);
+                    _context.Update(hotelComments);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!HotelExists(hotel.Id))
+                    if (!HotelCommentsExists(hotelComments.CommentId))
                     {
                         return NotFound();
                     }
@@ -134,11 +113,10 @@ namespace TouristInformation.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CityId"] = new SelectList(_context.City, "Id", "Name", hotel.CityId);
-            return View(hotel);
+            return View(hotelComments);
         }
 
-        // GET: Hotels/Delete/5
+        // GET: HotelComments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -146,31 +124,30 @@ namespace TouristInformation.Controllers
                 return NotFound();
             }
 
-            var hotel = await _context.Hotel
-                .Include(h => h.City)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (hotel == null)
+            var hotelComments = await _context.HotelComments
+                .FirstOrDefaultAsync(m => m.CommentId == id);
+            if (hotelComments == null)
             {
                 return NotFound();
             }
 
-            return View(hotel);
+            return View(hotelComments);
         }
 
-        // POST: Hotels/Delete/5
+        // POST: HotelComments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var hotel = await _context.Hotel.FindAsync(id);
-            _context.Hotel.Remove(hotel);
+            var hotelComments = await _context.HotelComments.FindAsync(id);
+            _context.HotelComments.Remove(hotelComments);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool HotelExists(int id)
+        private bool HotelCommentsExists(int id)
         {
-            return _context.Hotel.Any(e => e.Id == id);
+            return _context.HotelComments.Any(e => e.CommentId == id);
         }
     }
 }

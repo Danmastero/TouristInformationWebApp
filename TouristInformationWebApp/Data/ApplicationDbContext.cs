@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TouristInformation.Models;
+using TouristInformationWebApp.Models;
 
 namespace TouristInformationWebApp.Data
 {
@@ -24,5 +25,6 @@ namespace TouristInformationWebApp.Data
         public DbSet<TouristInformation.Models.Culinary> Culinary { get; set; }
         public DbSet<TouristInformation.Models.City> City { get; set; }
         public DbSet<TouristInformation.Models.Hotel> Hotel { get; set; }
+        public DbSet<TouristInformationWebApp.Models.HotelComments> HotelComments { get; set; }
     }
 }

@@ -44,6 +44,10 @@ namespace TouristInformation.Controllers
         // GET: Cities/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+
+
+
+
             if (id == null)
             {
                 return NotFound();
@@ -59,6 +63,8 @@ namespace TouristInformation.Controllers
             ViewBag.Hotels = GetHotels();
             ViewBag.Restaurants = GetRestaurant();
             ViewBag.Attractions = GetAttractions();
+
+
 
             return View(city);
         }
