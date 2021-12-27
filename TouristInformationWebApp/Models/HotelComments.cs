@@ -18,10 +18,16 @@ namespace TouristInformationWebApp.Models
 
             [ForeignKey("Hotel")] 
             public int HotelId { get; set; }
+        [ForeignKey("Restaurant")] 
+            public int RestaurantId { get; set; }
+        [ForeignKey("Attraction")] 
+            public int AttractionId { get; set; }
 
             public int? Rating { get; set; }
 
             public virtual Hotel Hotel{ get; set; }
+            public virtual Restaurant Restaurant{ get; set; }
+            public virtual Attraction Attraction{ get; set; }
 
 
     }
