@@ -7,16 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TouristInformationWebApp.Data;
 using TouristInformationWebApp.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace TouristInformationWebApp.Controllers
 {
     public class ReservationsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ReservationsController(ApplicationDbContext context)
+
+
+        public ReservationsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+
         }
 
         // GET: Reservations
@@ -56,6 +63,10 @@ namespace TouristInformationWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,NumOfSeats,Date")] Reservation reservation)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);// will give the user's userId
+
+
+
             if (ModelState.IsValid)
             {
                 _context.Add(reservation);

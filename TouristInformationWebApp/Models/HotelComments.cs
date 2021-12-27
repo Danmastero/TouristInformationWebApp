@@ -26,8 +26,6 @@ namespace TouristInformationWebApp.Models
             public int? Rating { get; set; }
 
             public virtual Hotel Hotel{ get; set; }
-            public virtual Restaurant Restaurant{ get; set; }
-            public virtual Attraction Attraction{ get; set; }
 
 
     }
