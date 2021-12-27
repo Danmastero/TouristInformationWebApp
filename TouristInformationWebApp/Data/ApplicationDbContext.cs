@@ -26,5 +26,6 @@ namespace TouristInformationWebApp.Data
         public DbSet<TouristInformation.Models.City> City { get; set; }
         public DbSet<TouristInformation.Models.Hotel> Hotel { get; set; }
         public DbSet<TouristInformationWebApp.Models.HotelComments> HotelComments { get; set; }
+        public DbSet<TouristInformationWebApp.Models.Reservation> Reservation { get; set; }
     }
 }

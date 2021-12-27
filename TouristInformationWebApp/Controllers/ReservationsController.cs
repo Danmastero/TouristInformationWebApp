@@ -6,32 +6,30 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TouristInformationWebApp.Data;
-using TouristInformation.Models;
-using Microsoft.AspNetCore.Authorization;
-using TouristInformationWebApp.Controllers;
+using TouristInformationWebApp.Models;
 
-namespace TouristInformation.Controllers
+namespace TouristInformationWebApp.Controllers
 {
-    [Authorize]
-    public class ToursController : Controller
+    public class ReservationsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        public ReservationsController()
+        {
 
+        }
 
-
-        public ToursController(ApplicationDbContext context)
+        public ReservationsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Tours
+        // GET: Reservations
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Tour.Include(t => t.Attraction);
-            return View(await appDbContext.ToListAsync());
+            return View(await _context.Reservation.ToListAsync());
         }
 
-        // GET: Tours/Details/5
+        // GET: Reservations/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -39,57 +37,58 @@ namespace TouristInformation.Controllers
                 return NotFound();
             }
 
-            var tour = await _context.Tour
-                .Include(t => t.Attraction)
+            var reservation = await _context.Reservation
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (tour == null)
+            if (reservation == null)
             {
                 return NotFound();
             }
 
-            return View(tour);
+            return View(reservation);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Reservation(int? id)
-        {
-            ReservationsController reservationController = new ReservationsController();
-
-            if (id == null)
-            {
-                return NotFound();
-            }
-            return NotFound();
-
-
-            //return RedirectToAction(reservationController.CreateReservation(id, 10));
-        }
-
-        // GET: Tours/Create
+        // GET: Reservations/Create
         public IActionResult Create()
         {
-            ViewData["AttractionId"] = new SelectList(_context.Attraction, "Id", "Description");
             return View();
         }
 
-        // POST: Tours/Create
+        // POST: Reservations/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,AvailableSpots,AttractionId")] Tour tour)
+        public async Task<IActionResult> Create([Bind("Id,UserId,NumOfSeats,Date")] Reservation reservation)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(tour);
+                _context.Add(reservation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AttractionId"] = new SelectList(_context.Attraction, "Id", "Description", tour.AttractionId);
-            return View(tour);
+            return View(reservation);
         }
 
-        // GET: Tours/Edit/5
+        public async Task<IActionResult> CreateReservation(int id, int availableSpots)
+        {
+            Reservation reservation = new Reservation();
+            reservation.Id = id;
+            if (availableSpots > 1)
+            {
+                reservation.NumOfSeats = availableSpots;
+            }
+
+            if(ModelState.IsValid)
+            {
+                _context.Add(reservation);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+
+
+            }
+            return View(reservation);
+        }
+        // GET: Reservations/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -97,23 +96,22 @@ namespace TouristInformation.Controllers
                 return NotFound();
             }
 
-            var tour = await _context.Tour.FindAsync(id);
-            if (tour == null)
+            var reservation = await _context.Reservation.FindAsync(id);
+            if (reservation == null)
             {
                 return NotFound();
             }
-            ViewData["AttractionId"] = new SelectList(_context.Attraction, "Id", "Description", tour.AttractionId);
-            return View(tour);
+            return View(reservation);
         }
 
-        // POST: Tours/Edit/5
+        // POST: Reservations/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,AvailableSpots,AttractionId")] Tour tour)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,NumOfSeats,Date")] Reservation reservation)
         {
-            if (id != tour.Id)
+            if (id != reservation.Id)
             {
                 return NotFound();
             }
@@ -122,12 +120,12 @@ namespace TouristInformation.Controllers
             {
                 try
                 {
-                    _context.Update(tour);
+                    _context.Update(reservation);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TourExists(tour.Id))
+                    if (!ReservationExists(reservation.Id))
                     {
                         return NotFound();
                     }
@@ -136,13 +134,13 @@ namespace TouristInformation.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return 
+                    RedirectToAction(nameof(Index));
             }
-            ViewData["AttractionId"] = new SelectList(_context.Attraction, "Id", "Description", tour.AttractionId);
-            return View(tour);
+            return View(reservation);
         }
 
-        // GET: Tours/Delete/5
+        // GET: Reservations/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -150,31 +148,30 @@ namespace TouristInformation.Controllers
                 return NotFound();
             }
 
-            var tour = await _context.Tour
-                .Include(t => t.Attraction)
+            var reservation = await _context.Reservation
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (tour == null)
+            if (reservation == null)
             {
                 return NotFound();
             }
 
-            return View(tour);
+            return View(reservation);
         }
 
-        // POST: Tours/Delete/5
+        // POST: Reservations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var tour = await _context.Tour.FindAsync(id);
-            _context.Tour.Remove(tour);
+            var reservation = await _context.Reservation.FindAsync(id);
+            _context.Reservation.Remove(reservation);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TourExists(int id)
+        private bool ReservationExists(int id)
         {
-            return _context.Tour.Any(e => e.Id == id);
+            return _context.Reservation.Any(e => e.Id == id);
         }
     }
 }
