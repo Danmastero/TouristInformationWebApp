@@ -50,7 +50,7 @@ namespace TouristInformation.Controllers
         // GET: Tours/Create
         public IActionResult Create()
         {
-            ViewData["AttractionId"] = new SelectList(_context.Attraction, "Id", "Description");
+            ViewData["AttractionId"] = new SelectList(_context.Attraction, "Id", "Name");
             return View();
         }
 

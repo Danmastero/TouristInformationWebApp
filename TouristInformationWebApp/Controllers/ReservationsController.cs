@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TouristInformationWebApp.Data;
 using TouristInformationWebApp.Models;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
 namespace TouristInformationWebApp.Controllers
 {
@@ -17,13 +17,11 @@ namespace TouristInformationWebApp.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-
-
         public ReservationsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
-            _context = context;
             _userManager = userManager;
 
+            _context = context;
         }
 
         // GET: Reservations
@@ -63,9 +61,7 @@ namespace TouristInformationWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,NumOfSeats,Date")] Reservation reservation)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);// will give the user's userId
-
-
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
 
             if (ModelState.IsValid)
             {
