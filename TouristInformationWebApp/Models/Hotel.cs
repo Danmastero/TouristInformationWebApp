@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using TouristInformationWebApp.Models;
 
 namespace TouristInformation.Models
 {
@@ -34,6 +35,8 @@ namespace TouristInformation.Models
         public virtual int CityId { get; set; }
 
         public virtual City City { get; set; }
-        
+
+        public virtual ICollection<HotelComments> HotelComments { get; set; }
+
     }
 }

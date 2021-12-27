@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TouristInformationWebApp.Data;
 using TouristInformation.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TouristInformation.Controllers
 {
+    [Authorize]
     public class ToursController : Controller
     {
         private readonly ApplicationDbContext _context;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TouristInformation.Models;
 
 namespace TouristInformationWebApp.Models
 {
@@ -15,10 +16,13 @@ namespace TouristInformationWebApp.Models
 
             public DateTime? ThisDateTime { get; set; }
 
+            [ForeignKey("Hotel")] 
             public int HotelId { get; set; }
 
             public int? Rating { get; set; }
-        
+
+            public virtual Hotel Hotel{ get; set; }
+
 
     }
 }

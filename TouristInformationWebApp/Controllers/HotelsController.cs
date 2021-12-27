@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TouristInformationWebApp.Data;
 using TouristInformation.Models;
+using Microsoft.AspNetCore.Authorization;
+using TouristInformationWebApp.Models;
 
 namespace TouristInformation.Controllers
 {
+    [Authorize]
     public class HotelsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -17,6 +20,11 @@ namespace TouristInformation.Controllers
         public HotelsController(ApplicationDbContext context)
         {
             _context = context;
+        }
+        public List<HotelComments> GetHotelComents()
+        {
+            List<HotelComments> hotelComments = _context.HotelComments.ToList();
+            return hotelComments;
         }
 
         // GET: Hotels
