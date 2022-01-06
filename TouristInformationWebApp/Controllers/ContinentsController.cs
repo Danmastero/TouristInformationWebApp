@@ -49,7 +49,7 @@ namespace TouristInformation.Controllers
                 return NotFound();
             }
             ViewBag.Countries = GetCountries();
-            return View();
+            return View(continent);
         }
 
         // GET: Continents/Create
