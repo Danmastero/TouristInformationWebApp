@@ -17,9 +17,8 @@ namespace TouristInformationWebApp.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ReservationsController(ApplicationDbContext context)
+        public ReservationsController(ApplicationDbContext context,)
         {
-
             _context = context;
         }
 
