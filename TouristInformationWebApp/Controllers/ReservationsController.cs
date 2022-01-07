@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,7 +22,8 @@ namespace TouristInformationWebApp.Controllers
         // GET: Reservations
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Reservation.ToListAsync());
+            var applicationDbContext = _context.Reservation.Include(r => r.Tour);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Reservations/Details/5
@@ -35,6 +35,7 @@ namespace TouristInformationWebApp.Controllers
             }
 
             var reservation = await _context.Reservation
+                .Include(r => r.Tour)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (reservation == null)
             {
@@ -47,6 +48,7 @@ namespace TouristInformationWebApp.Controllers
         // GET: Reservations/Create
         public IActionResult Create()
         {
+            ViewData["TourId"] = new SelectList(_context.Tour, "Id", "Name");
             return View();
         }
 
@@ -55,17 +57,15 @@ namespace TouristInformationWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NumOfSeats,TourId,Date")] Reservation reservation)
+        public async Task<IActionResult> Create([Bind("Id,UserId,NumOfSeats,TourId,Date")] Reservation reservation)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
-            reservation.UserId = userId;
-
             if (ModelState.IsValid)
             {
                 _context.Add(reservation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["TourId"] = new SelectList(_context.Tour, "Id", "Description", reservation.TourId);
             return View(reservation);
         }
 
@@ -82,6 +82,7 @@ namespace TouristInformationWebApp.Controllers
             {
                 return NotFound();
             }
+            ViewData["TourId"] = new SelectList(_context.Tour, "Id", "Description", reservation.TourId);
             return View(reservation);
         }
 
@@ -117,6 +118,7 @@ namespace TouristInformationWebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["TourId"] = new SelectList(_context.Tour, "Id", "Description", reservation.TourId);
             return View(reservation);
         }
 
@@ -129,6 +131,7 @@ namespace TouristInformationWebApp.Controllers
             }
 
             var reservation = await _context.Reservation
+                .Include(r => r.Tour)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (reservation == null)
             {

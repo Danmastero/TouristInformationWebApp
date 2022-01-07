@@ -23,6 +23,8 @@ namespace TouristInformationWebApp.Models
         [ForeignKey("Tour")]
 
         public virtual int TourId { get; set; }
+        public virtual Tour Tour { get; set; }
+
 
 
         [Required]
