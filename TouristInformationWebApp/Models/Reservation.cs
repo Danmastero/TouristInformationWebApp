@@ -20,12 +20,13 @@ namespace TouristInformationWebApp.Models
         public int NumOfSeats { get; set; }
 
 
+        [ForeignKey("Tour")]
+
+        public virtual int TourId { get; set; }
+
+
         [Required]
         public DateTime Date { get; set; }
-
-
-        public virtual ICollection<Tour> Tour { get; set; }
-
 
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,12 +14,9 @@ namespace TouristInformationWebApp.Controllers
     public class ReservationsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        //private readonly UserManager<ApplicationUser> _userManager;
 
-        public ReservationsController(ApplicationDbContext context/*, UserManager<ApplicationUser> userManager*/)
+        public ReservationsController(ApplicationDbContext context)
         {
-            //_userManager = userManager;
-
             _context = context;
         }
 
@@ -59,19 +55,16 @@ namespace TouristInformationWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId,NumOfSeats,Date")] Reservation reservation)
+        public async Task<IActionResult> Create([Bind("Id,NumOfSeats,TourId,Date")] Reservation reservation)
         {
-
-           
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
             reservation.UserId = userId;
+
             if (ModelState.IsValid)
             {
-
-                    _context.Add(reservation);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                
+                _context.Add(reservation);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
             return View(reservation);
         }
@@ -97,7 +90,7 @@ namespace TouristInformationWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,NumOfSeats,Date")] Reservation reservation)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,NumOfSeats,TourId,Date")] Reservation reservation)
         {
             if (id != reservation.Id)
             {

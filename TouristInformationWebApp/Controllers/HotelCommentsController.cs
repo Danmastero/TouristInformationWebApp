@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +10,6 @@ using TouristInformationWebApp.Models;
 
 namespace TouristInformationWebApp.Controllers
 {
-    [Authorize]
     public class HotelCommentsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -24,7 +22,8 @@ namespace TouristInformationWebApp.Controllers
         // GET: HotelComments
         public async Task<IActionResult> Index()
         {
-            return View(await _context.HotelComments.ToListAsync());
+            var applicationDbContext = _context.HotelComments.Include(h => h.Hotel);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: HotelComments/Details/5
@@ -36,6 +35,7 @@ namespace TouristInformationWebApp.Controllers
             }
 
             var hotelComments = await _context.HotelComments
+                .Include(h => h.Hotel)
                 .FirstOrDefaultAsync(m => m.CommentId == id);
             if (hotelComments == null)
             {
@@ -48,6 +48,7 @@ namespace TouristInformationWebApp.Controllers
         // GET: HotelComments/Create
         public IActionResult Create()
         {
+            ViewData["HotelId"] = new SelectList(_context.Hotel, "Id", "Description");
             return View();
         }
 
@@ -64,6 +65,7 @@ namespace TouristInformationWebApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["HotelId"] = new SelectList(_context.Hotel, "Id", "Description", hotelComments.HotelId);
             return View(hotelComments);
         }
 
@@ -80,6 +82,7 @@ namespace TouristInformationWebApp.Controllers
             {
                 return NotFound();
             }
+            ViewData["HotelId"] = new SelectList(_context.Hotel, "Id", "Description", hotelComments.HotelId);
             return View(hotelComments);
         }
 
@@ -115,6 +118,7 @@ namespace TouristInformationWebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["HotelId"] = new SelectList(_context.Hotel, "Id", "Description", hotelComments.HotelId);
             return View(hotelComments);
         }
 
@@ -127,6 +131,7 @@ namespace TouristInformationWebApp.Controllers
             }
 
             var hotelComments = await _context.HotelComments
+                .Include(h => h.Hotel)
                 .FirstOrDefaultAsync(m => m.CommentId == id);
             if (hotelComments == null)
             {

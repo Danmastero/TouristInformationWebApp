@@ -19,10 +19,10 @@
                 @Html.DisplayNameFor(model => model.ThisDateTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HotelId)
+                @Html.DisplayNameFor(model => model.Rating)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Rating)
+                @Html.DisplayNameFor(model => model.Hotel)
             </th>
             <th></th>
         </tr>
@@ -37,10 +37,10 @@
                 @Html.DisplayFor(modelItem => item.ThisDateTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.HotelId)
+                @Html.DisplayFor(modelItem => item.Rating)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Rating)
+                @Html.DisplayFor(modelItem => item.Hotel.Description)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.CommentId">Edit</a> |

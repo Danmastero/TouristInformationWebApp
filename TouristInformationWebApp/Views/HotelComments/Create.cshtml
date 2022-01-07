@@ -24,8 +24,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="HotelId" class="control-label"></label>
-                <input asp-for="HotelId" class="form-control" />
-                <span asp-validation-for="HotelId" class="text-danger"></span>
+                <select asp-for="HotelId" class ="form-control" asp-items="ViewBag.HotelId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Rating" class="control-label"></label>

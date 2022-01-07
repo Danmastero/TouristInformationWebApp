@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TouristInformationWebApp.Data;
 
 namespace TouristInformationWebApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220107173657_useridtostring2")]
+    partial class useridtostring2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -490,9 +492,14 @@ namespace TouristInformationWebApp.Data.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
+                    b.Property<int?>("ReservationId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AttractionId");
+
+                    b.HasIndex("ReservationId");
 
                     b.ToTable("Tour");
                 });
@@ -504,6 +511,9 @@ namespace TouristInformationWebApp.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("AttractionId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Comments")
                         .HasColumnType("nvarchar(max)");
 
@@ -511,6 +521,9 @@ namespace TouristInformationWebApp.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RestaurantId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ThisDateTime")
@@ -534,9 +547,6 @@ namespace TouristInformationWebApp.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("NumOfSeats")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TourId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -683,6 +693,10 @@ namespace TouristInformationWebApp.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("TouristInformationWebApp.Models.Reservation", null)
+                        .WithMany("Tour")
+                        .HasForeignKey("ReservationId");
+
                     b.Navigation("Attraction");
                 });
 
@@ -731,6 +745,11 @@ namespace TouristInformationWebApp.Data.Migrations
             modelBuilder.Entity("TouristInformation.Models.Hotel", b =>
                 {
                     b.Navigation("HotelComments");
+                });
+
+            modelBuilder.Entity("TouristInformationWebApp.Models.Reservation", b =>
+                {
+                    b.Navigation("Tour");
                 });
 #pragma warning restore 612, 618
         }

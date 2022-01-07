@@ -27,6 +27,7 @@ namespace TouristInformation.Models
         [Required]
         public int AvailableSpots { get; set; }
 
+        
 
         [ForeignKey("Attraction")]
         public virtual int AttractionId { get; set; }
