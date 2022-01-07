@@ -13,7 +13,7 @@ namespace TouristInformationWebApp.Models
         public int Id { get; set; }
 
         [ForeignKey("User")]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
 
         [Required]

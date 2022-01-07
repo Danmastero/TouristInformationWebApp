@@ -15,11 +15,11 @@ namespace TouristInformationWebApp.Controllers
     public class ReservationsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        //private readonly UserManager<ApplicationUser> _userManager;
 
-        public ReservationsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public ReservationsController(ApplicationDbContext context/*, UserManager<ApplicationUser> userManager*/)
         {
-            _userManager = userManager;
+            //_userManager = userManager;
 
             _context = context;
         }
@@ -61,13 +61,17 @@ namespace TouristInformationWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,NumOfSeats,Date")] Reservation reservation)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
 
+           
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+            reservation.UserId = userId;
             if (ModelState.IsValid)
             {
-                _context.Add(reservation);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                    _context.Add(reservation);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                
             }
             return View(reservation);
         }
