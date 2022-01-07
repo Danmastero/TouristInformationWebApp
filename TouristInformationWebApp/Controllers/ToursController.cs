@@ -67,7 +67,7 @@ namespace TouristInformation.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AttractionId"] = new SelectList(_context.Attraction, "Id", "Description", tour.AttractionId);
+            ViewData["AttractionId"] = new SelectList(_context.Attraction, "Id", "Name", tour.AttractionId);
             return View(tour);
         }
 

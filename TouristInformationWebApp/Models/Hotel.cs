@@ -24,6 +24,7 @@ namespace TouristInformation.Models
 
         [Required]
         [StringLength(30, MinimumLength = 3)]
+        [Range(1, 6)]
         public int Stars { get; set; }
 
         [Required]

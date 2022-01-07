@@ -55,9 +55,12 @@
     </dl>
     @foreach (City city in ViewBag.Cities)
     {
+        if(city.CountryId == Model.Id)
+        {
         <tr>
             <td> @city.Name</td>
         </tr>
+        }
     }
 </div>
 <div>

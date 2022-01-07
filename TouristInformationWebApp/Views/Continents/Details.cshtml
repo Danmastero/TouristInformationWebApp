@@ -8,11 +8,15 @@
 
 <div>
     @foreach (Country country in ViewBag.Countries )
-            {
-                <tr>
-                    <td> @country.Name</td>
-                </tr>
-            }
+    {
+        if(country.ContinentId == Model.Id)
+        {
+        <tr>
+           <td> @country.Name</td>
+        </tr>
+        }
+
+    }
 
 </div>
 <div>
