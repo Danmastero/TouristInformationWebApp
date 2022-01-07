@@ -48,6 +48,12 @@ namespace TouristInformationWebApp.Controllers
         // GET: Reservations/Create
         public IActionResult Create()
         {
+            var tours = _context.Tour.Where(e => e.Id != null).ToList();
+            foreach(var x in tours)
+            {
+                x.Name = x.Name + "(" + x.AvailableSpots + ")";
+            }
+
             ViewData["TourId"] = new SelectList(_context.Tour, "Id", "Name");
             return View();
         }
@@ -59,6 +65,21 @@ namespace TouristInformationWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,NumOfSeats,TourId,Date")] Reservation reservation)
         {
+
+            var tour = _context.Tour.FirstOrDefault(e => e.Id == reservation.TourId);
+            if (tour.AvailableSpots >= reservation.NumOfSeats)
+            {
+                tour.AvailableSpots -= reservation.NumOfSeats;
+                _context.Update(tour);
+
+
+            }
+            else
+            {
+
+                return View(reservation);
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(reservation);
@@ -67,6 +88,7 @@ namespace TouristInformationWebApp.Controllers
             }
             ViewData["TourId"] = new SelectList(_context.Tour, "Id", "Description", reservation.TourId);
             return View(reservation);
+
         }
 
         // GET: Reservations/Edit/5
@@ -125,6 +147,7 @@ namespace TouristInformationWebApp.Controllers
         // GET: Reservations/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            
             if (id == null)
             {
                 return NotFound();
@@ -133,6 +156,11 @@ namespace TouristInformationWebApp.Controllers
             var reservation = await _context.Reservation
                 .Include(r => r.Tour)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            var tour = _context.Tour.FirstOrDefault(e => e.Id == reservation.TourId);
+            tour.AvailableSpots += reservation.NumOfSeats;
+            _context.Update(tour);
+
             if (reservation == null)
             {
                 return NotFound();
