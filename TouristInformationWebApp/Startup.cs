@@ -36,7 +36,8 @@ namespace TouristInformationWebApp
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
-            services.AddMvc().AddRazorPagesOptions(options => {
+            services.AddMvc().AddRazorPagesOptions(options =>
+            {
                 options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "");
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -69,7 +70,7 @@ namespace TouristInformationWebApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Hotel}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
 

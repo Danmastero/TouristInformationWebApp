@@ -25,6 +25,7 @@ namespace TouristInformation.Models
         public string Description { get; set; }
 
         [Required]
+        [Range(1, 6)]
         public int Stars { get; set; }
 
         [ForeignKey("City")]
