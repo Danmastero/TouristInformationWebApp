@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,7 +14,7 @@ namespace TouristInformationWebApp.Controllers
     public class ReservationsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
+        private Dictionary<DateTime, int> availableSpotsForDay;
         public ReservationsController(ApplicationDbContext context)
         {
             _context = context;
@@ -48,7 +49,9 @@ namespace TouristInformationWebApp.Controllers
         // GET: Reservations/Create
         public IActionResult Create()
         {
-            var tours = _context.Tour.Where(e => e.Id != null).ToList();
+            
+
+            var tours = _context.Tour.Where(e => e.Id != null);
             foreach(var x in tours)
             {
                 x.Name = x.Name + "(" + x.AvailableSpots + ")";
@@ -66,22 +69,32 @@ namespace TouristInformationWebApp.Controllers
         public async Task<IActionResult> Create([Bind("Id,UserId,NumOfSeats,TourId,Date")] Reservation reservation)
         {
 
+            var reservationsAtCurrentDate = _context.Reservation.Where(e => e.Date.Date.Equals(reservation.Date.Date)).ToList();
+            var totalSum = reservationsAtCurrentDate.Sum(e => e.NumOfSeats) + reservation.NumOfSeats; //Sum all reservations at current day
+
+            //Take correct tour
             var tour = _context.Tour.FirstOrDefault(e => e.Id == reservation.TourId);
-            if (tour.AvailableSpots >= reservation.NumOfSeats)
+
+        
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if(userId != null) 
+                reservation.UserId = userId;
+
+            //Dodaje do viewbaga wolne miejsca na dany dzien
+            var spotsForDay = tour.AvailableSpots - totalSum;
+
+            if (spotsForDay <= tour.AvailableSpots)
             {
-                tour.AvailableSpots -= reservation.NumOfSeats;
-                _context.Update(tour);
+                ViewBag.SpotsForDay =  spotsForDay;
+                //_context.Update(tour);
 
 
             }
-            else
+
+            if (ModelState.IsValid && totalSum <= tour.AvailableSpots)
             {
 
-                return View(reservation);
-            }
-
-            if (ModelState.IsValid)
-            {
                 _context.Add(reservation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
