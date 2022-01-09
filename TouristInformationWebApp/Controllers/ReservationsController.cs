@@ -160,6 +160,8 @@ namespace TouristInformationWebApp.Controllers
             var tour = _context.Tour.FirstOrDefault(e => e.Id == reservation.TourId);
             tour.AvailableSpots += reservation.NumOfSeats;
             _context.Update(tour);
+            await _context.SaveChangesAsync();
+
 
             if (reservation == null)
             {
