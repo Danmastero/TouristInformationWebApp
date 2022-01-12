@@ -4,9 +4,9 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Dodawanie</h1>
 
-<h4>Reservation</h4>
+<h4>Rezerwacji</h4>
 <h5>Każdego dnia jest dostępne 50 miejsc na każdą wycieczkę</h5>
 <hr />
 <div class="row">
@@ -27,27 +27,27 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
+                <label>Id Użytkownika</label>
                 <input asp-for="UserId" class="form-control"/>
                 <span asp-validation-for="UserId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NumOfSeats" class="control-label"></label>
+                <label>Liczba miejsc</label>
                 <input asp-for="NumOfSeats" class="form-control"/>
                 <span asp-validation-for="NumOfSeats" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TourId" class="control-label"></label>
+                <label>Wycieczka</label>
                 <select asp-for="TourId" class="form-control" asp-items="ViewBag.TourId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="Date" class="control-label"></label>
+                <label>Data</label>
                 <input asp-for="Date" class="form-control"/>
                 <span asp-validation-for="Date" class="text-danger"></span>
 
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary"/>
+                <input type="submit" value="Utwórz" class="btn btn-primary"/>
             </div>
 
         </form>
@@ -55,7 +55,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Powrót do listy</a>
 </div>
 
 @section Scripts {
