@@ -34,6 +34,8 @@ namespace TouristInformation.Models
 
         public virtual City City { get; set; }
 
+        public virtual ICollection<RestaurantRating> RestaurantRatings { get; set; }
+
 
     }
 }
