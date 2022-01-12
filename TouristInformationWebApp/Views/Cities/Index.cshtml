@@ -7,22 +7,22 @@
 
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Dodaj nowe miasto</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                <label>Nazwa</label>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Population)
+                <label>Populacja</label>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                 <label>Opis</label>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Country)
+                <label>Państwo</label>
             </th>
             <th></th>
         </tr>
@@ -43,9 +43,9 @@
                 @Html.DisplayFor(modelItem => item.Country.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Szczegóły</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
             </td>
         </tr>
 }
