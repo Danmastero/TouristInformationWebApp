@@ -4,53 +4,49 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
+<h1>Sczegóły</h1>
+    
 <div>
-    <h4>City</h4>
+    <h4>Miasto</h4>
     <hr />
     <dl class="row">
 
  
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+             <label>Nazwa</label>
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Population)
+             <label>Populacja</label>
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Population)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+             <label>Opis</label>
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Country)
+             <label>Państwo</label>
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Country.Capital)
         </dd>
+         <dt class="col-sm-2">
+             <label>Atrakcje</label>
+        </dt>
+        <dd class="col-sm-10">
+           <a >@Model.Attractions.FirstOrDefault(e=>e.CityId == Model.Id).Name</a> 
+  
+        </dd>
+
     </dl>
-
-    <strong>Atrakcje</strong>
-    <br />
-    <input type="number" name="My Rating System" id="Demo" class="rating" data-clearable="remove"/>
-    
-        
-            <tr>    
-
-            <a asp-action="Index">@Model.Attractions.FirstOrDefault(e=>e.CityId == Model.Id).Name</a> 
-            <td> </td>
-            <br />
-            </tr>
     
 </div>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Powrót do listy</a>
 </div>
