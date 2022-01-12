@@ -82,25 +82,22 @@ namespace TouristInformationWebApp.Controllers
                 reservation.UserId = userId;
 
             //Dodaje do viewbaga wolne miejsca na dany dzien
-            var spotsForDay = tour.AvailableSpots - totalSum;
+            var spotsForDay = tour.AvailableSpots - reservationsAtCurrentDate.Sum(e => e.NumOfSeats);
+            if (spotsForDay < 0) spotsForDay = 0;
 
-            if (spotsForDay <= tour.AvailableSpots)
-            {
-                ViewBag.SpotsForDay =  spotsForDay;
-                //_context.Update(tour);
-
-
-            }
 
             if (ModelState.IsValid && totalSum <= tour.AvailableSpots)
             {
 
                 _context.Add(reservation);
                 await _context.SaveChangesAsync();
+                TempData["Message"] = $"Pomyślnie zarezerwowałeś {reservation.NumOfSeats} miejsc";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["TourId"] = new SelectList(_context.Tour, "Id", "Description", reservation.TourId);
-            return View(reservation);
+
+            TempData["Message"] = $"Nie udało zarezerwować się miejsc, możesz zarezerwować aktualnie maksymalnie {spotsForDay}";
+            return RedirectToAction(nameof(Create));
 
         }
 
