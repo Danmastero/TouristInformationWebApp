@@ -27,5 +27,8 @@ namespace TouristInformationWebApp.Data
         public DbSet<TouristInformation.Models.Hotel> Hotel { get; set; }
         public DbSet<TouristInformationWebApp.Models.HotelComments> HotelComments { get; set; }
         public DbSet<TouristInformationWebApp.Models.Reservation> Reservation { get; set; }
+        public DbSet<TouristInformation.Models.AttractionRating> AttractionRating { get; set; }
+        public DbSet<TouristInformation.Models.RestaurantRating> RestaurantRating { get; set; }
+        public DbSet<TouristInformation.Models.HotelRating> HotelRating { get; set; }
     }
 }

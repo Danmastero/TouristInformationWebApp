@@ -37,7 +37,7 @@ namespace TouristInformation.Models
 
         public virtual City City { get; set; }
 
-        public virtual ICollection<HotelComments> HotelComments { get; set; }
+        public virtual ICollection<HotelRating> HotelRatings{ get; set; }
 
     }
 }

@@ -30,6 +30,8 @@ namespace TouristInformation.Models
 
         public virtual ICollection<Tour> Tour { get; set; }
 
+        //public virtual ICollection<AttractionRating> AttractionRatings{ get; set; }
+
 
     }
 }
