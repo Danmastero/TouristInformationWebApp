@@ -25,6 +25,8 @@ namespace TouristInformation.Models
         public string Language { get; set; }
 
         [Required]
+        [Range(0, int.MaxValue, ErrorMessage = "Only positive number allowed.")]
+
         public int Population { get; set; }
 
         [Required]

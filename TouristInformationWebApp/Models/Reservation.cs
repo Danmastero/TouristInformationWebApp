@@ -15,7 +15,7 @@ namespace TouristInformationWebApp.Models
         [ForeignKey("User")]
         public string UserId { get; set; }
 
-
+        [Range(1,50)]
         [Required]
         public int NumOfSeats { get; set; }
 

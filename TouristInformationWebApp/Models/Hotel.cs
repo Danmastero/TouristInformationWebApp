@@ -18,13 +18,12 @@ namespace TouristInformation.Models
         public string Name { get; set; }
 
         [Required]
-        [StringLength(30, MinimumLength = 3)]
+        [Range(0, int.MaxValue, ErrorMessage = "Only positive number allowed.")]
         public string Price { get; set; }
 
 
         [Required]
-        [StringLength(30, MinimumLength = 3)]
-        [Range(1, 6)]
+        [Range(1, 5)]
         public int Stars { get; set; }
 
         [Required]

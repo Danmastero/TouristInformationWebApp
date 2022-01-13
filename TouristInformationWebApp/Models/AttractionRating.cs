@@ -20,7 +20,7 @@ namespace TouristInformation.Models
         public string Comment { get; set; }
 
         [Required]
-        [Range(1, 6)]
+        [Range(1, 5)]
         public int Rating { get; set; }
 
         [ForeignKey("Attraction")]

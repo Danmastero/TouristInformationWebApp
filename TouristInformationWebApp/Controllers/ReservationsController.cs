@@ -75,7 +75,7 @@ namespace TouristInformationWebApp.Controllers
             //Take correct tour
             var tour = _context.Tour.FirstOrDefault(e => e.Id == reservation.TourId);
 
-        
+            var totalPrice = reservation.NumOfSeats * tour.Price;
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             if(userId != null) 
@@ -91,7 +91,7 @@ namespace TouristInformationWebApp.Controllers
 
                 _context.Add(reservation);
                 await _context.SaveChangesAsync();
-                TempData["Message"] = $"Pomyślnie zarezerwowałeś {reservation.NumOfSeats} miejsc";
+                TempData["Message"] = $"Pomyślnie zarezerwowałeś {reservation.NumOfSeats} miejsc na kwotę {totalPrice.ToString("0.00")}";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["TourId"] = new SelectList(_context.Tour, "Id", "Description", reservation.TourId);
