@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TouristInformationWebApp.Data;
 
@@ -11,9 +12,10 @@ using TouristInformationWebApp.Data;
 namespace TouristInformationWebApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220112192405_dodanieOceniania")]
+    partial class dodanieOceniania
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -268,11 +270,8 @@ namespace TouristInformationWebApp.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("Rating")
+                    b.Property<int>("Stars")
                         .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -486,11 +485,8 @@ namespace TouristInformationWebApp.Data.Migrations
                     b.Property<int>("HotelId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Rating")
+                    b.Property<int>("Stars")
                         .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -548,14 +544,11 @@ namespace TouristInformationWebApp.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
                     b.Property<int>("RestaurantId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Stars")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -717,7 +710,7 @@ namespace TouristInformationWebApp.Data.Migrations
             modelBuilder.Entity("TouristInformation.Models.AttractionRating", b =>
                 {
                     b.HasOne("TouristInformation.Models.Attraction", "Attraction")
-                        .WithMany()
+                        .WithMany("AttractionRatings")
                         .HasForeignKey("AttractionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -848,6 +841,8 @@ namespace TouristInformationWebApp.Data.Migrations
 
             modelBuilder.Entity("TouristInformation.Models.Attraction", b =>
                 {
+                    b.Navigation("AttractionRatings");
+
                     b.Navigation("Tour");
                 });
 
