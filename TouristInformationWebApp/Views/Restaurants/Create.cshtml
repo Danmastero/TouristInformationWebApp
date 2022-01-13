@@ -13,38 +13,38 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label>Nazwa</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cuisine" class="control-label"></label>
+                <label>Kuchnia</label>
                 <input asp-for="Cuisine" class="form-control" />
                 <span asp-validation-for="Cuisine" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+                <label>Opis</label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Stars" class="control-label"></label>
+               <label>Gwiazdki</label>
                 <input asp-for="Stars" class="form-control" />
                 <span asp-validation-for="Stars" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CityId" class="control-label"></label>
+                <label>Miasto</label>
                 <select asp-for="CityId" class ="form-control" asp-items="ViewBag.CityId"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Stwórz" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Powrót do listy</a>
 </div>
 
 @section Scripts {
