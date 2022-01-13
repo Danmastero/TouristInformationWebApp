@@ -4,9 +4,9 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Edytuj</h1>
 
-<h4>AttractionRating</h4>
+<h4>Ocena Atrakcji</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,34 +14,34 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
+                <label>Id Użytkownika</label>
                 <input asp-for="UserId" class="form-control" />
                 <span asp-validation-for="UserId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Comment" class="control-label"></label>
+                 <label>Komentarze</label>
                 <input asp-for="Comment" class="form-control" />
                 <span asp-validation-for="Comment" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Rating" class="control-label"></label>
+                 <label>Ocena</label>
                 <input asp-for="Rating" class="form-control" />
                 <span asp-validation-for="Rating" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AttractionId" class="control-label"></label>
+                <label>ID Atrakcji</label>
                 <select asp-for="AttractionId" class="form-control" asp-items="ViewBag.AttractionId"></select>
                 <span asp-validation-for="AttractionId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Zapisz" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Powrót do listy</a>
 </div>
 
 @section Scripts {
