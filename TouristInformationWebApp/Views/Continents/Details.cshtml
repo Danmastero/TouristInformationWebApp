@@ -1,25 +1,30 @@
 ﻿@model TouristInformation.Models.Continent
 
     @{
-        ViewData["Title"] = "Details";
+        ViewData["Title"] = "Szczegóły";
     }
 
-    <h1>Details</h1>
+    <h1>Szczegóły</h1>
 
 <div>
+ 
+    <h4>Nazwa</h4>
     @foreach (Country country in ViewBag.Countries )
     {
         if(country.ContinentId == Model.Id)
         {
+
+            <br/>
         <tr>
            <td> @country.Name</td>
         </tr>
         }
-
+        
     }
 
 </div>
+<br/>
 <div>
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index">Powrót do listy</a>
  </div>
 
