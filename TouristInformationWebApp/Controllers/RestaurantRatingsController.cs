@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -59,6 +60,9 @@ namespace TouristInformationWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,Comment,Rating,RestaurantId")] RestaurantRating restaurantRating)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if (userId != null)
+                restaurantRating.UserId = userId;
             if (ModelState.IsValid)
             {
                 _context.Add(restaurantRating);
